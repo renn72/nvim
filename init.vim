@@ -81,6 +81,8 @@ set formatoptions+=r
 
 " Highlights "{{{
 " ---------------------------------------------------------------------
+set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+" set list
 set cursorline
 "set cursorcolumn
 
@@ -152,10 +154,23 @@ if exists("&termguicolors") && exists("&winblend")
   set wildoptions=pum
   set pumblend=5
   set background=dark
+  
+  
+  " Night Owl
+  Plug 'haishanh/night-owl.vim'
+  " syntax enable
+  " colorscheme jellybeans
+  " let g:lightline = { 'colorscheme': 'nightowl' }
+  
   " Use NeoSolarized
   let g:neosolarized_termtrans=1
   runtime ./colors/NeoSolarized.vim
   colorscheme NeoSolarized
+  
+  hi rainbowcol1 guifg=#268bd2
+  hi rainbowcol2 guifg=#a3bb00
+  hi rainbowcol3 guifg=#d2ab33
+  
 endif
 
 "}}}

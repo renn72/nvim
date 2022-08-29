@@ -25,7 +25,7 @@ local on_attach = function(client, bufnr)
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  --buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   --buf_set_keymap('i', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
@@ -39,7 +39,7 @@ local on_attach = function(client, bufnr)
   --buf_set_keymap('n', '<C-j>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', '<S-C-j>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>1 <CR><CR>", opts)
 
   -- formatting
   if client.name == 'tsserver' then
@@ -49,7 +49,7 @@ local on_attach = function(client, bufnr)
   if client.resolved_capabilities.document_formatting then
     vim.api.nvim_command [[augroup Format]]
     vim.api.nvim_command [[autocmd! * <buffer>]]
-    vim.api.nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()]]
+    -- vim.api.nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()]]
     vim.api.nvim_command [[augroup END]]
   end
 
@@ -96,7 +96,7 @@ nvim_lsp.flow.setup {
 
 nvim_lsp.tsserver.setup {
   on_attach = on_attach,
-  filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+  filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript", "javascriptreact" },
   capabilities = capabilities
 }
 
@@ -107,9 +107,9 @@ nvim_lsp.diagnosticls.setup {
     linters = {
       eslint = {
         command = 'eslint_d',
-        rootPatterns = { '.git' },
+        rootPatterns = { '.eslintrc.js' },
         debounce = 100,
-        args = { '--stdin', '--stdin-filename', '%filepath', '--format', 'json' },
+        args = { '--stdin', '--stdin-filename', '%filepath', '--format' },
         sourceName = 'eslint_d',
         parseJson = {
           errorsRoot = '[0].messages',
@@ -135,9 +135,8 @@ nvim_lsp.diagnosticls.setup {
     formatters = {
       eslint_d = {
         command = 'eslint_d',
-        rootPatterns = { '.git' },
+        rootPatterns = { '.eslintrc.js' },
         args = { '--stdin', '--stdin-filename', '%filename', '--fix-to-stdout' },
-        rootPatterns = { '.git' },
       },
       prettier = {
         command = 'prettier_d_slim',
@@ -148,14 +147,13 @@ nvim_lsp.diagnosticls.setup {
     },
     formatFiletypes = {
       css = 'prettier',
-      javascript = 'prettier',
-      javascriptreact = 'prettier',
-      json = 'prettier',
+      javascript = 'eslint_d',
+      javascriptreact = 'eslint_d',
+      json = 'eslint_d',
       scss = 'prettier',
       less = 'prettier',
-      typescript = 'prettier',
-      typescriptreact = 'prettier',
-      json = 'prettier',
+      typescript = 'eslint_d',
+      typescriptreact = 'eslint_d',
     }
   }
 }

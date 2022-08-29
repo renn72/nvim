@@ -81,3 +81,6 @@ nmap <leader>w[ c$[<CR><tab><C-r>"<esc>O
 nmap <leader>rc auseCallback(()<space>=><space>{<CR><esc>ji,[]<esc>kddkA<CR>
 nmap <leader>re auseEffect(()<space>=><space>{<CR><esc>ji,[]<esc>kddkA<CR>
 
+" comment
+map <C-_> 0i//<Esc>
+
